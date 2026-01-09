@@ -1,0 +1,9 @@
+ALTER TABLE matches
+ADD COLUMN cancelled BOOLEAN NOT NULL DEFAULT FALSE;
+
+
+
+
+
+
+

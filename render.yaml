@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: tennis-club-manager-api
+    env: docker                  # Usaremos Docker para empaquetar Spring Boot
+    plan: hobby                  # O free/starter según tu cuenta
+    region: frankfurt            # O la región que prefieras en Render
+    dockerfilePath: ./Dockerfile # Dockerfile en la raíz del proyecto backend
+    autoDeploy: true
+
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+
+      # JDBC hacia tu Postgres de Render (con sslmode=require)
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://dpg-d4s6ieur433s73c0ep30-a/tennis_club_manager_db?sslmode=require
+
+      - key: SPRING_DATASOURCE_USERNAME
+        value: tennis_club_manager_db_user
+
+      # No pongas la contraseña en el repo: márcala como no sincronizada
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
