@@ -538,9 +538,18 @@ CREATE INDEX IF NOT EXISTS ix_events_service ON calendar_events(service_id) WHER
 CREATE INDEX IF NOT EXISTS ix_events_monitor ON calendar_events(monitor_email) WHERE monitor_email IS NOT NULL;
 CREATE INDEX IF NOT EXISTS ix_events_period ON calendar_events(period_id) WHERE period_id IS NOT NULL;
 
+-- Función inmutable para truncar a mes (necesaria para índices funcionales)
+CREATE OR REPLACE FUNCTION trunc_month_immutable(timestamptz)
+RETURNS timestamp WITHOUT time zone
+LANGUAGE sql
+IMMUTABLE
+AS $$
+  SELECT date_trunc('month', $1 AT TIME ZONE 'UTC')::timestamp;
+$$;
+
 -- Índice compuesto para consultas de calendario mensual
 CREATE INDEX IF NOT EXISTS ix_events_calendar_month 
-  ON calendar_events(date_trunc('month', start_datetime), event_type, status);
+  ON calendar_events(trunc_month_immutable(start_datetime), event_type, status);
 
 -- ----------------------------------------------------------------------------
 -- 8. CREAR TABLA DE ASISTENCIAS (Registro de asistencia a clases)

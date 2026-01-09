@@ -42,9 +42,6 @@ public class UserEntity extends AuditableEntity {
     @JdbcTypeCode(SqlTypes.NAMED_ENUM)
     private Role role = Role.ALUMNO;
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
-    private PlayerEntity player;
-
     @Column(name = "phone", nullable = false)
     private String phone;
 

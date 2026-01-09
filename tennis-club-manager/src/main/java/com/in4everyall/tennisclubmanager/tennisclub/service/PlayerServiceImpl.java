@@ -108,7 +108,6 @@ public class PlayerServiceImpl implements PlayerService {
 
         UserEntity user = player.getUser();
         if (user != null) {
-            user.setPlayer(null);
             userRepository.save(user);
         }
         player.setUser(null);
